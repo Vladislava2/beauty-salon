@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
+<div th:fragment="content">
+  <div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container py-5">
+      <h1 class="display-5 fw-bold">Красота, която остава</h1>
+      <p class="col-md-8 fs-5">Маникюр, гел лак и грижа за ръцете в уютна атмосфера.</p>
+      <a href="/booking" class="btn btn-dark btn-lg">Запази час</a>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="mb-4">Популярни услуги</h2>
+    <div class="row g-4">
+      <div class="col-md-4" th:each="s : ${services}">
+        <div class="card h-100">
+          <img src="/img/placeholder.jpg" class="card-img-top" alt="Service">
+          <div class="card-body">
+            <h5 class="card-title" th:text="${s.name}"></h5>
+            <p class="card-text" th:text="${s.description}"></p>
+          </div>
+          <div class="card-footer d-flex justify-content-between align-items-center">
+            <span class="fw-bold" th:text="${#numbers.formatDecimal(s.price,1,2)} + ' лв'"></span>
+            <a class="btn btn-outline-dark btn-sm" href="/booking">Запази</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</html>

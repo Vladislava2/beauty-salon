@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
+<div th:fragment="content">
+  <h1 class="mb-4">Запазване на час</h1>
+
+  <div class="alert alert-success" th:if="${ok}">
+    Успешно запазихме часа ви. Ще получите потвърждение по email.
+  </div>
+  <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
+  <form method="post" th:action="@{/booking}" th:object="${appointment}">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Име</label>
+        <input class="form-control" th:field="*{customerName}" required>
+        <div class="text-danger" th:errors="*{customerName}"></div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Имейл</label>
+        <input class="form-control" th:field="*{customerEmail}">
+        <div class="text-danger" th:errors="*{customerEmail}"></div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Телефон</label>
+        <input class="form-control" th:field="*{customerPhone}">
+        <div class="text-danger" th:errors="*{customerPhone}"></div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Услуга</label>
+        <!-- Биндваме по id, за да няма нужда от конвертор -->
+        <select class="form-select" th:field="*{service.id}">
+          <option th:each="s : ${services}" th:value="${s.id}" th:text="${s.name}"></option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Дата</label>
+        <input type="date" id="date" class="form-control">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Свободни часове</label>
+        <select id="slots" class="form-select"></select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Начален час</label>
+        <input type="datetime-local" class="form-control" th:field="*{startAt}" required>
+        <div class="text-danger" th:errors="*{startAt}"></div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Реферален код (ако имате)</label>
+        <input class="form-control" th:field="*{referredBy}">
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Бележка</label>
+        <textarea class="form-control" th:field="*{note}" rows="3"></textarea>
+      </div>
+
+      <div class="col-12">
+        <button class="btn btn-dark">Изпрати</button>
+      </div>
+    </div>
+  </form>
+
+  <script>
+    const dateEl = document.getElementById('date');
+    const slotsEl = document.getElementById('slots');
+
+    dateEl.addEventListener('change', async () => {
+      const d = dateEl.value;
+      slotsEl.innerHTML = '';
+      if (!d) return;
+
+      const res = await fetch(`/api/availability?date=${d}&durationMinutes=60`);
+      const data = await res.json();
+
+      data.forEach(t => {
+        const dt = new Date(t);
+        const opt = document.createElement('option');
+        const pad = (n)=> String(n).padStart(2,'0');
+        opt.value = t;
+        opt.textContent = pad(dt.getHours()) + ':' + pad(dt.getMinutes());
+        slotsEl.appendChild(opt);
+      });
+
+      slotsEl.addEventListener('change', () => {
+        const iso = slotsEl.value;
+        if (!iso) return;
+        const dt = new Date(iso);
+        const pad = (n)=> String(n).padStart(2,'0');
+        const local =
+                dt.getFullYear() + '-' + pad(dt.getMonth()+1) + '-' + pad(dt.getDate()) +
+                'T' + pad(dt.getHours()) + ':' + pad(dt.getMinutes());
+        document.querySelector('input[type="datetime-local"]').value = local;
+      }, { once: true });
+    });
+  </script>
+</div>
+</html>

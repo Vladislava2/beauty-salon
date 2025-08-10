@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
+  <h1 class="mb-4">Услуги</h1>
+  <div class="row g-4" th:if="${services}">
+    <div class="col-md-6" th:each="s : ${services}">
+      <div class="p-4 border rounded-3 h-100">
+        <h4 th:text="${s.name}"></h4>
+        <p th:text="${s.description}"></p>
+        <div class="d-flex justify-content-between">
+          <span class="fw-bold" th:text="${#numbers.formatDecimal(s.price,1,2)} + ' лв'"></span>
+          <a href="/booking" class="btn btn-dark btn-sm">Запази</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

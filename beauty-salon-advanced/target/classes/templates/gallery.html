@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
+<div th:fragment="content">
+  <h1 class="mb-4">Галерия</h1>
+  <div class="row g-3">
+    <div class="col-6 col-md-4 col-lg-3" th:each="i : ${#numbers.sequence(1,8)}">
+      <img src="/img/placeholder.jpg" class="img-fluid rounded-3" alt="Work sample">
+    </div>
+  </div>
+</div>
+</html>
