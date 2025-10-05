@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход | Beauty Salon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8cdda, #1d2b64);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px 50px;
+            width: 360px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 25px;
+            color: #1d2b64;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #1d2b64;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #1d2b64, #f8cdda);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease, background 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #2e3a87, #f7b4d0);
+        }
+
+        .error {
+            color: #d9534f;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .footer-text a {
+            color: #1d2b64;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Вход в Beauty Salon</h2>
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label for="email">Имейл:</label>
+            <input type="email" id="email" name="email" placeholder="Въведи имейл" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Парола:</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit">Вход</button>
+
+        <p th:if="${error}" th:text="${error}" class="error"></p>
+    </form>
+
+    <p class="footer-text">Нямаш акаунт? <a href="#">Регистрирай се</a></p>
+</div>
+</body>
+</html>
+

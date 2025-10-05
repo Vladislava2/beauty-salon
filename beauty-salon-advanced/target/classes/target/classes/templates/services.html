@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
+<div th:fragment="content">
   <h1 class="mb-4">Услуги</h1>
+
   <div class="row g-4" th:if="${services}">
     <div class="col-md-6" th:each="s : ${services}">
       <div class="p-4 border rounded-3 h-100">
@@ -13,4 +15,5 @@
       </div>
     </div>
   </div>
+</div>
 </html>

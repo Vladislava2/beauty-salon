@@ -6,10 +6,24 @@
   <div class="row g-4" th:if="${services}">
     <div class="col-md-6" th:each="s : ${services}">
       <div class="p-4 border rounded-3 h-100">
+
+        <!-- Снимка според името на услугата -->
+        <div class="service-thumb mb-3">
+          <img
+                  th:src="${#strings.equalsIgnoreCase(s.name,'Класически маникюр') ? '/img/services/classicNails.jpg' :
+                           #strings.equalsIgnoreCase(s.name,'Гел лак')             ? '/img/services/gelNails.jpg'     :
+                           #strings.containsIgnoreCase(s.name,'поддръжка')         ? '/img/services/nailArtist.jpg'   :
+                           '/img/services/default.jpg'}"
+                           th:alt="${s.name}" />
+        </div>
+
+
         <h4 th:text="${s.name}"></h4>
         <p th:text="${s.description}"></p>
-        <div class="d-flex justify-content-between">
-          <span class="fw-bold" th:text="${#numbers.formatDecimal(s.price,1,2)} + ' лв'"></span>
+
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="fw-bold"
+                th:text="${#numbers.formatDecimal(s.price, 1, 'POINT', 2, 'POINT')} + ' лв'"></span>
           <a href="/booking" class="btn btn-dark btn-sm">Запази</a>
         </div>
       </div>

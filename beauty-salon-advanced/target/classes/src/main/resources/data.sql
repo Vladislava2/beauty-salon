@@ -2,3 +2,5 @@ INSERT INTO manicure_service (name, description, price, duration_minutes) VALUES
   ('Класически маникюр', 'Оформяне, почистване, лак', 25.00, 45),
   ('Гел лак', 'Издръжлив цвят 2-3 седмици', 35.00, 60),
   ('Поддръжка гел', 'Корекция и подсилване', 40.00, 75);
+
+INSERT INTO users (email, password) VALUES ('demo@salon.bg', 'demo123');
