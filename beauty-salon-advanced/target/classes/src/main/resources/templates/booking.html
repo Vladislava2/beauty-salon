@@ -2,126 +2,289 @@
 <html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
 <div th:fragment="content">
 
-  <!-- Центрирана карта като при login -->
-  <div style="min-height:calc(100vh - 120px); display:flex; align-items:center; justify-content:center; padding:32px;">
-    <div class="card" style="width:min(880px, 96vw); padding:34px;">
-      <h2 class="h2" style="text-align:center; margin-bottom:4px;">Запазване на час</h2>
-      <p class="small" style="text-align:center; margin-bottom:18px;">Попълни детайлите и избери удобен час</p>
-
-      <!-- по желание: лента/снимка в горната част -->
-      <div style="overflow:hidden; border-radius:14px; margin-bottom:18px;">
-        <img th:src="@{/img/booking-hero.jpg}" alt="Beauty Salon" style="width:100%; max-height:220px; object-fit:cover;">
-      </div>
-
-      <!-- известия -->
-      <div class="alert alert-success" th:if="${ok}">
-        Успешно запазихме часа ви. Ще получите потвърждение по email.
-      </div>
-      <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
-
-      <!-- форма -->
-      <form method="post" th:action="@{/booking}" th:object="${appointment}" style="margin-top:8px;">
-        <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px;">
-          <div>
-            <label class="small">Име</label>
-            <input class="input" th:field="*{customerName}" required>
-            <div class="text-danger small" th:errors="*{customerName}"></div>
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-lg border-0">
+          <div class="card-header bg-dark text-white text-center py-4">
+            <h2 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Запазване на час</h2>
+            <p class="mb-0 mt-2 text-white-50">Попълни детайлите и избери удобен час</p>
           </div>
+          <div class="card-body p-4">
+            <!-- Hero image -->
+            <div class="text-center mb-4">
+              <img src="/img/placeholder.jpg" alt="Nail District"
+                   class="img-fluid rounded" style="max-height: 200px; object-fit: cover; width: 100%;">
+            </div>
 
-          <div>
-            <label class="small">Имейл</label>
-            <input class="input" th:field="*{customerEmail}">
-            <div class="text-danger small" th:errors="*{customerEmail}"></div>
-          </div>
+            <!-- известия -->
+            <div class="alert alert-success alert-dismissible fade show" th:if="${ok}" role="alert">
+              <i class="fas fa-check-circle me-2"></i>
+              <strong>Успех!</strong> Успешно запазихме часа ви. Ще получите потвърждение по email.
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" th:if="${error}" role="alert">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              <strong>Грешка!</strong> <span th:text="${error}"></span>
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
 
-          <div>
-            <label class="small">Телефон</label>
-            <input class="input" th:field="*{customerPhone}">
-            <div class="text-danger small" th:errors="*{customerPhone}"></div>
-          </div>
+            <!-- форма -->
+            <form method="post" th:action="@{/booking}" th:object="${appointment}">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-user me-1"></i>Име *</label>
+                  <input type="text" class="form-control" th:field="*{customerName}" required 
+                         placeholder="Въведете вашето име">
+                  <div class="text-danger small" th:errors="*{customerName}"></div>
+                </div>
 
-          <div>
-            <label class="small">Услуга</label>
-            <select class="select" th:field="*{service.id}">
-              <option th:each="s : ${services}" th:value="${s.id}" th:text="${s.name}"></option>
-            </select>
-          </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-envelope me-1"></i>Имейл</label>
+                  <input type="email" class="form-control" th:field="*{customerEmail}" 
+                         placeholder="example@email.com">
+                  <div class="text-danger small" th:errors="*{customerEmail}"></div>
+                </div>
 
-          <div>
-            <label class="small">Дата</label>
-            <input type="date" id="date" class="input">
-          </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-phone me-1"></i>Телефон</label>
+                  <input type="tel" class="form-control" th:field="*{customerPhone}" id="phoneInput"
+                         placeholder="+359 XXX XXX XXX" pattern="^[+0-9 ]{6,20}$">
+                  <div class="text-danger small" th:errors="*{customerPhone}"></div>
+                  <div class="invalid-feedback" id="phoneError">
+                    Телефонният номер не отговаря на формата. Използвайте само цифри, + и интервали (6-20 символа)
+                  </div>
+                </div>
 
-          <div>
-            <label class="small">Свободни часове</label>
-            <select id="slots" class="select"></select>
-          </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-spa me-1"></i>Услуга *</label>
+                  <select class="form-select" th:field="*{service.id}" id="serviceSelect" required>
+                    <option value="">Изберете услуга...</option>
+                    <option th:each="s : ${services}" th:value="${s.id}" 
+                            th:text="${s.name} + ' - ' + ${s.price} + 'лв (' + ${s.durationMinutes} + 'мин)'"
+                            th:data-duration="${s.durationMinutes}"></option>
+                  </select>
+                </div>
 
-          <div>
-            <label class="small">Начален час</label>
-            <input type="datetime-local" id="startAt" class="input" th:field="*{startAt}" required>
-            <div class="text-danger small" th:errors="*{startAt}"></div>
-          </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-calendar me-1"></i>Дата *</label>
+                  <input type="date" id="date" class="form-control" required>
+                  <div class="form-text">Изберете дата, за да видите свободните часове</div>
+                </div>
 
-          <div>
-            <label class="small">Реферален код (ако имате)</label>
-            <input class="input" th:field="*{referredBy}">
-          </div>
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-clock me-1"></i>Свободни часове</label>
+                  <select id="slots" class="form-select" disabled>
+                    <option>Моля, изберете дата и услуга...</option>
+                  </select>
+                  <div class="form-text">Работно време: 9:00 - 18:00</div>
+                </div>
 
-          <div style="grid-column:1 / -1;">
-            <label class="small">Бележка</label>
-            <textarea class="textarea" th:field="*{note}" rows="3" placeholder="По желание"></textarea>
+                <!-- Hidden field for actual datetime -->
+                <input type="hidden" id="startAt" th:field="*{startAt}">
+                <div class="text-danger small" th:errors="*{startAt}"></div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold"><i class="fas fa-gift me-1"></i>Реферален код</label>
+                  <input type="text" class="form-control" th:field="*{referredBy}" 
+                         placeholder="Ако сте препоръчани от приятел - ">
+                  <div class="form-text">Получете 50% отстъпка на шестото Ви посещение в нашият салон!</div>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label fw-semibold"><i class="fas fa-comment me-1"></i>Бележка</label>
+                  <textarea class="form-control" th:field="*{note}" rows="3" 
+                            placeholder="Допълнителни пожелания или коментари..."></textarea>
+                </div>
+              </div>
+
+              <div class="d-flex gap-2 mt-4 justify-content-end">
+                <a href="/services" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Назад</a>
+                <button type="submit" class="btn btn-dark btn-lg" id="submitBtn" disabled>
+                  <i class="fas fa-calendar-plus me-1"></i>Запази час
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-
-        <div style="display:flex; gap:12px; margin-top:16px; justify-content:flex-end;">
-          <a href="/services" class="btn btn-outline">Назад</a>
-          <button class="btn" type="submit">Изпрати</button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 
-  <!-- JS (поправен шаблонен стринг с backticks) -->
+  <!-- Enhanced JavaScript with Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     const dateEl = document.getElementById('date');
+    const serviceEl = document.getElementById('serviceSelect');
     const slotsEl = document.getElementById('slots');
     const startAtEl = document.getElementById('startAt');
+    const submitBtn = document.getElementById('submitBtn');
+    const phoneInput = document.getElementById('phoneInput');
+    const phoneError = document.getElementById('phoneError');
 
-    if (dateEl) {
-      dateEl.addEventListener('change', async () => {
-        const d = dateEl.value;
-        slotsEl.innerHTML = '';
-        if (!d) return;
+    // Set minimum date to today
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    dateEl.min = tomorrow.toISOString().split('T')[0];
+    
+    // Set maximum date to 3 months from now
+    const maxDate = new Date(today);
+    maxDate.setMonth(maxDate.getMonth() + 3);
+    dateEl.max = maxDate.toISOString().split('T')[0];
 
-        try {
-          const res = await fetch(`/api/availability?date=${d}&durationMinutes=60`);
-          const data = await res.json();
+    function updateAvailability() {
+      const date = dateEl.value;
+      const serviceId = serviceEl.value;
+      
+      if (!date || !serviceId) {
+        slotsEl.innerHTML = '<option>Моля, изберете дата и услуга...</option>';
+        slotsEl.disabled = true;
+        submitBtn.disabled = true;
+        return;
+      }
 
-          data.forEach(t => {
-            const dt = new Date(t);
+      // Get duration from selected service
+      const selectedOption = serviceEl.options[serviceEl.selectedIndex];
+      const duration = selectedOption.getAttribute('data-duration') || 60;
+      
+      // Show loading
+      slotsEl.innerHTML = '<option><i class="fas fa-spinner fa-spin"></i> Зареждане...</option>';
+      slotsEl.disabled = true;
+
+      fetch(`/api/availability?date=${date}&durationMinutes=${duration}`)
+        .then(response => {
+          console.log('API Response status:', response.status);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Available slots:', data);
+          slotsEl.innerHTML = '';
+          
+          if (data.length === 0) {
+            slotsEl.innerHTML = '<option>Няма свободни часове за тази дата</option>';
+            submitBtn.disabled = true;
+            return;
+          }
+
+          // Add default option
+          const defaultOpt = document.createElement('option');
+          defaultOpt.value = '';
+          defaultOpt.textContent = 'Изберете час...';
+          slotsEl.appendChild(defaultOpt);
+
+          // Add time slots
+          data.forEach(timeSlot => {
+            const dt = new Date(timeSlot);
             const opt = document.createElement('option');
-            const pad = (n)=> String(n).padStart(2,'0');
-            opt.value = t;
+            const pad = (n) => String(n).padStart(2, '0');
+            opt.value = timeSlot;
             opt.textContent = pad(dt.getHours()) + ':' + pad(dt.getMinutes());
             slotsEl.appendChild(opt);
           });
 
-          slotsEl.addEventListener('change', () => {
-            const iso = slotsEl.value;
-            if (!iso) return;
-            const dt = new Date(iso);
-            const pad = (n)=> String(n).padStart(2,'0');
-            const local =
-                    dt.getFullYear() + '-' + pad(dt.getMonth()+1) + '-' + pad(dt.getDate()) +
-                    'T' + pad(dt.getHours()) + ':' + pad(dt.getMinutes());
-            startAtEl.value = local;
-          }, { once: true });
-        } catch (e) {
-          console.error(e);
+          slotsEl.disabled = false;
+        })
+        .catch(error => {
+          console.error('Error fetching availability:', error);
+          slotsEl.innerHTML = `<option>Грешка: ${error.message}</option>`;
+          slotsEl.disabled = false;
+          submitBtn.disabled = true;
+        });
+    }
+
+    function updateSubmitButton() {
+      const hasDate = dateEl.value !== '';
+      const hasService = serviceEl.value !== '';
+      const hasSlot = slotsEl.value !== '';
+      const hasName = document.querySelector('input[name="customerName"]').value.trim() !== '';
+      
+      submitBtn.disabled = !(hasDate && hasService && hasSlot && hasName);
+    }
+
+    // Event listeners
+    dateEl.addEventListener('change', updateAvailability);
+    serviceEl.addEventListener('change', updateAvailability);
+    
+    slotsEl.addEventListener('change', () => {
+      const selectedSlot = slotsEl.value;
+      if (selectedSlot) {
+        startAtEl.value = selectedSlot;
+        updateSubmitButton();
+      }
+    });
+
+    // Phone validation
+    phoneInput.addEventListener('input', function() {
+      const phonePattern = /^[+0-9 ]{6,20}$/;
+      if (this.value && !phonePattern.test(this.value)) {
+        this.classList.add('is-invalid');
+        this.classList.remove('is-valid');
+      } else if (this.value) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+      } else {
+        this.classList.remove('is-invalid', 'is-valid');
+      }
+      updateSubmitButton();
+    });
+    
+    // Validate form inputs
+    document.querySelector('input[name="customerName"]').addEventListener('input', updateSubmitButton);
+    
+    // Add visual feedback for required fields
+    document.querySelectorAll('input[required], select[required]').forEach(field => {
+      field.addEventListener('blur', function() {
+        if (this.value.trim() === '') {
+          this.classList.add('is-invalid');
+        } else {
+          this.classList.remove('is-invalid');
+          this.classList.add('is-valid');
         }
       });
-    }
+    });
+
+    // Form submission validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+      const requiredFields = this.querySelectorAll('input[required], select[required]');
+      let isValid = true;
+      let errorMessages = [];
+      
+      requiredFields.forEach(field => {
+        if (field.value.trim() === '') {
+          field.classList.add('is-invalid');
+          isValid = false;
+        }
+      });
+      
+      if (!slotsEl.value) {
+        slotsEl.classList.add('is-invalid');
+        isValid = false;
+        errorMessages.push('Моля, изберете свободен час');
+      }
+      
+      // Validate phone format
+      if (phoneInput.value) {
+        const phonePattern = /^[+0-9 ]{6,20}$/;
+        if (!phonePattern.test(phoneInput.value)) {
+          phoneInput.classList.add('is-invalid');
+          isValid = false;
+          errorMessages.push('Невалиден формат на телефонния номер');
+        }
+      }
+      
+      if (!isValid) {
+        e.preventDefault();
+        if (errorMessages.length > 0) {
+          alert('Грешки:\n' + errorMessages.join('\n'));
+        } else {
+          alert('Моля, попълнете всички задължителни полета!');
+        }
+      }
+    });
   </script>
 </div>
 </html>

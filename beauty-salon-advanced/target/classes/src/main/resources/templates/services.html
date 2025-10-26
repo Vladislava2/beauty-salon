@@ -1,19 +1,196 @@
 <!DOCTYPE html>
 <html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
 <div th:fragment="content">
-  <h1 class="mb-4">Услуги</h1>
+  <!-- Hero Section -->
+  <div class="text-center mb-5">
+    <div class="d-inline-flex align-items-center justify-content-center bg-gradient rounded-circle p-3 mb-3" 
+         style="width: 80px; height: 80px; background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+      <i class="fas fa-spa text-white fa-2x"></i>
+    </div>
+    <h1 class="display-4 fw-bold mb-3" style="color: #2c3e50;">НАШИТЕ УСЛУГИ</h1>
+    <p class="lead text-muted">Доверете се на професионална грижа за ръцете си</p>
+  </div>
 
-  <div class="row g-4" th:if="${services}">
-    <div class="col-md-6" th:each="s : ${services}">
-      <div class="p-4 border rounded-3 h-100">
-        <h4 th:text="${s.name}"></h4>
-        <p th:text="${s.description}"></p>
-        <div class="d-flex justify-content-between">
-          <span class="fw-bold" th:text="${#numbers.formatDecimal(s.price,1,2)} + ' лв'"></span>
-          <a href="/booking" class="btn btn-dark btn-sm">Запази</a>
+  <!-- Services Grid -->
+  <div class="row g-4 mb-5" th:if="${services}">
+    <div class="col-lg-4 col-md-6" th:each="s, iterStat : ${services}">
+      <div class="card h-100 border-0 shadow-lg service-card position-relative overflow-hidden"
+           th:classappend="${iterStat.index == 0 ? 'card-pink' : (iterStat.index == 1 ? 'card-purple' : 'card-teal')}">
+        
+        <!-- Decorative gradient overlay -->
+        <div class="position-absolute top-0 end-0 opacity-10" style="width: 100px; height: 100px; border-radius: 50%; transform: translate(30px, -30px);"
+             th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
+                        (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
+                         'background: linear-gradient(135deg, #f093fb, #f5576c);')}">
+        </div>
+        
+        <!-- Service Icon -->
+        <div class="card-body text-center p-4">
+          <div class="service-icon mb-3">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-2 mb-2" style="width: 50px; height: 50px;"
+                 th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
+                            (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
+                             'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+              <i class="text-white"
+                 th:classappend="${iterStat.index == 0 ? 'fas fa-hand-sparkles' : 
+                                  (iterStat.index == 1 ? 'fas fa-palette' : 'fas fa-gem')}"></i>
+            </div>
+          </div>
+          
+          <!-- Service Image -->
+          <div class="service-image-wrapper mb-3">
+            <img th:src="${iterStat.index == 0 ? '/img/service-classic.jpg' : 
+                          (iterStat.index == 1 ? '/img/service-gel.jpg' : '/img/service-maintenance.jpg')}" 
+                 th:alt="${s.name}" 
+                 class="service-photo shadow-sm"
+                 onerror="this.src='/img/placeholder.jpg'">
+          </div>
+          
+          <!-- Service Details -->
+          <h4 class="card-title fw-bold mb-3" th:text="${s.name}" 
+              th:style="${iterStat.index == 0 ? 'color: #ee5a52;' : 
+                         (iterStat.index == 1 ? 'color: #764ba2;' : 'color: #11998e;')}"></h4>
+          
+          <!-- Detailed Description -->
+          <p class="card-text text-muted mb-3 text-start" style="font-size: 0.9rem; line-height: 1.6;"
+             th:text="${iterStat.index == 0 ? 
+                        'Класическият маникюр е основна грижа за ноктите, която включва оформяне на нокътната плочка, почистване на кожичките, полиране и нанасяне на лак. Той придава изчистен и поддържан вид на ръцете, като едновременно подхранва и заздравява ноктите. Подходящ е за всеки повод и подчертава естествената красота на ръцете.' : 
+                        (iterStat.index == 1 ? 
+                         'Гел лакът е дълготрайно решение за перфектен маникюр, което осигурява издръжливост до 2-3 седмици. Той предлага богата гама от цветове и блестящ ефект, без да се напуква или обелва. Идеален избор за заети дами, които искат безупречни нокти за по-дълго време.' : 
+                         'Поддръжката на гел включва корекция на отрасналата част на нокътя и подсилване на гел покритието. Тази процедура осигурява продължителна красота и здравина на ноктите, като запазва перфектния им вид. Препоръчва се на всеки 2-3 седмици за оптимални резултати.')}"></p>
+          
+          <!-- Duration Badge -->
+          <div class="mb-3">
+            <span class="badge rounded-pill px-3 py-2"
+                  th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
+                             (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
+                              'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+              <i class="fas fa-clock me-1"></i><span th:text="${s.durationMinutes} + ' мин'"></span>
+            </span>
+          </div>
+          
+          <!-- Book Button (centered, no price) -->
+          <div class="text-center mt-auto">
+            <a href="/booking" 
+               class="btn btn-lg px-5 py-2 fw-semibold text-white border-0 shadow-sm"
+               th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
+                          (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
+                           'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+              <i class="fas fa-calendar-plus me-2"></i>Запази час
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  
+  <!-- Call to Action Section -->
+  <div class="text-center py-5" style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 20px;">
+    <div class="text-white">
+      <h3 class="fw-bold mb-3">Не можете да решите?</h3>
+      <p class="mb-4">Обадете се на наш консултант.</p>
+      <a href="/booking" class="btn btn-light btn-lg px-5 py-3 fw-semibold">
+        <i class="fas fa-phone me-2"></i>Консултация
+      </a>
+    </div>
+  </div>
+  
+  <!-- Features Section -->
+  <div class="row g-4 mt-5">
+    <div class="col-md-4 text-center">
+      <div class="feature-item p-4">
+        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+             style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+          <i class="fas fa-award text-white"></i>
+        </div>
+        <h5 class="fw-bold">Професионализъм</h5>
+        <p class="text-muted">Опитни специалисти с години опит</p>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="feature-item p-4">
+        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+             style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2);">
+          <i class="fas fa-heart text-white"></i>
+        </div>
+        <h5 class="fw-bold">Индивидуален подход</h5>
+        <p class="text-muted">Всяка услуга се адаптира според вашите нужди</p>
+      </div>
+    </div>
+    <div class="col-md-4 text-center">
+      <div class="feature-item p-4">
+        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+             style="width: 60px; height: 60px; background: linear-gradient(135deg, #11998e, #38ef7d);">
+          <i class="fas fa-leaf text-white"></i>
+        </div>
+        <h5 class="fw-bold">Качествени продукти</h5>
+        <p class="text-muted">Използваме само премиум козметика</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+.service-image-wrapper {
+  width: 100%;
+  aspect-ratio: 16/9;
+  max-height: 150px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f0f0f0;
+}
+
+.service-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.service-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+}
+
+.service-card .btn:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+.feature-item {
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+}
+
+.opacity-10 {
+  opacity: 0.1;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.service-card {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+</style>
 </html>

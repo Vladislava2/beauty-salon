@@ -2,125 +2,228 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Вход | Beauty Salon</title>
+    <title>Вход | Nail District</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #f8cdda, #1d2b64);
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .login-container {
             background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 40px 50px;
-            width: 360px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            padding: 50px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
             text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
 
         .login-container h2 {
+            margin-bottom: 35px;
+            color: #2c3e50;
+            font-weight: 700;
+            font-size: 2rem;
+        }
+
+        .form-floating {
             margin-bottom: 25px;
-            color: #1d2b64;
-            letter-spacing: 1px;
         }
 
-        .form-group {
-            text-align: left;
-            margin-bottom: 20px;
+        .form-floating input {
+            border-radius: 15px;
+            border: 2px solid #e3f2fd;
+            padding: 20px 15px 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
         }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 6px;
-            color: #333;
+        .form-floating input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.15);
+            background: white;
         }
 
-        input[type="email"],
-        input[type="password"] {
+        .form-floating label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .btn-login {
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            border-color: #1d2b64;
-        }
-
-        button {
-            width: 100%;
-            background: linear-gradient(135deg, #1d2b64, #f8cdda);
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s ease, background 0.3s;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #2e3a87, #f7b4d0);
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, #5a67d8, #667eea);
         }
 
-        .error {
-            color: #d9534f;
-            font-weight: bold;
-            margin-top: 10px;
+        .btn-login:active {
+            transform: translateY(-1px);
+        }
+
+        .alert {
+            border-radius: 15px;
+            border: none;
+            padding: 15px 20px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
         }
 
         .footer-text {
-            margin-top: 25px;
-            font-size: 13px;
-            color: #555;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6c757d;
         }
 
         .footer-text a {
-            color: #1d2b64;
+            color: #667eea;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .footer-text a:hover {
+            color: #764ba2;
             text-decoration: underline;
+        }
+
+        .home-link {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .home-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-<div class="login-container">
-    <h2>Вход в Beauty Salon</h2>
-    <form th:action="@{/login}" method="post">
-        <div class="form-group">
-            <label for="email">Имейл:</label>
-            <input type="email" id="email" name="email" placeholder="Въведи имейл" required>
+    <a href="/" class="home-link">
+        <i class="fas fa-home me-2"></i>Начало
+    </a>
+    
+    <div class="login-container">
+        <!-- Login Icon -->
+        <div class="login-icon">
+            <i class="fas fa-user-circle text-white fa-2x"></i>
         </div>
-
-        <div class="form-group">
-            <label for="password">Парола:</label>
-            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        
+        <h2>Добре дошли!</h2>
+        
+        <form th:action="@{/login}" method="post">
+            <!-- Email Field -->
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" name="email" 
+                       placeholder="name@example.com" required>
+                <label for="email">
+                    <i class="fas fa-envelope me-2"></i>Имейл адрес
+                </label>
+            </div>
+            
+            <!-- Password Field -->
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" name="password" 
+                       placeholder="Password" required>
+                <label for="password">
+                    <i class="fas fa-lock me-2"></i>Парола
+                </label>
+            </div>
+            
+            <!-- Login Button -->
+            <button type="submit" class="btn btn-login">
+                <i class="fas fa-sign-in-alt me-2"></i>Влезте в системата
+            </button>
+            
+            <!-- Error Message -->
+            <div th:if="${error}" class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span th:text="${error}"></span>
+            </div>
+        </form>
+        
+        <!-- Footer Text -->
+        <div class="footer-text">
+            <p class="mb-0">Първи път тук? <a href="/">Отидете на началото</a></p>
+            <small class="text-muted mt-2 d-block">По въпроси се обърнете към нашия екип</small>
         </div>
-
-        <button type="submit">Вход</button>
-
-        <p th:if="${error}" th:text="${error}" class="error"></p>
-    </form>
-
-    <p class="footer-text">Нямаш акаунт? <a href="#">Регистрирай се</a></p>
-</div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 

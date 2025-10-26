@@ -26,11 +26,18 @@ public class BookingService {
   }
 
   public boolean isFree(LocalDateTime start, int durationMinutes) {
-    LocalDateTime end = start.plusMinutes(durationMinutes);
-    long overlaps = appointmentRepository.countByStartAtBetween(
-            start.minusMinutes(durationMinutes), end
-    );
-    return overlaps == 0;
+    try {
+      LocalDateTime end = start.plusMinutes(durationMinutes);
+      // Check if any appointment overlaps with this time slot
+      long overlaps = appointmentRepository.countByStartAtBetween(
+              start.minusMinutes(durationMinutes - 1), end
+      );
+      return overlaps == 0;
+    } catch (Exception e) {
+      System.err.println("Error checking availability: " + e.getMessage());
+      e.printStackTrace();
+      return true; // If error, assume slot is free
+    }
   }
 
   private String generateReferralCode(String id) {
@@ -50,8 +57,9 @@ public class BookingService {
     long past = appointmentRepository.countByCustomerEmailOrCustomerPhone(
             a.getCustomerEmail(), a.getCustomerPhone()
     );
-    boolean hasDiscount = ((past + 1) % 5 == 0);
-    a.setDiscountPercent(hasDiscount ? 20 : 0);
+    // 50% discount on 6th visit (after 5 completed visits)
+    boolean hasDiscount = (past + 1 == 6);
+    a.setDiscountPercent(hasDiscount ? 50 : 0);
 
     a.setPriceAtBooking(s.getPrice());
 

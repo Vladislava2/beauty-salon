@@ -1,18 +1,187 @@
 <!DOCTYPE html>
 <html lang="bg" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout}">
 <div th:fragment="content">
-  <h1 class="mb-4">Ценоразпис</h1>
-  <table class="table table-striped">
-    <thead>
-    <tr><th>Услуга</th><th>Цена</th><th>Време</th></tr>
-    </thead>
-    <tbody>
-    <tr th:each="s : ${services}">
-      <td th:text="${s.name}"></td>
-      <td th:text="${#numbers.formatDecimal(s.price,1,2)} + ' лв'"></td>
-      <td th:text="${s.durationMinutes} + ' мин'"></td>
-    </tr>
-    </tbody>
-  </table>
+  <!-- Header Section -->
+  <div class="text-center mb-5">
+    <div class="d-inline-flex align-items-center justify-content-center bg-gradient rounded-circle p-3 mb-3" 
+         style="width: 80px; height: 80px; background: linear-gradient(135deg, #667eea, #764ba2);">
+      <i class="fas fa-tags text-white fa-2x"></i>
+    </div>
+    <h1 class="display-4 fw-bold mb-3" style="color: #2c3e50;">Ценоразпис</h1>
+    <p class="lead text-muted">Прозрачни цени за всички наши премиум услуги</p>
+  </div>
+
+  <!-- Pricing Cards -->
+  <div class="row g-4 mb-5">
+    <div class="col-lg-4 col-md-6" th:each="s, iterStat : ${services}">
+      <div class="card h-100 border-0 shadow-lg pricing-card position-relative overflow-hidden"
+           th:classappend="${iterStat.index == 1 ? 'popular-service' : ''}">
+        
+        <!-- Popular Badge -->
+        <div th:if="${iterStat.index == 1}" class="position-absolute top-0 end-0 m-3">
+          <span class="badge rounded-pill px-3 py-2" 
+                style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+            <i class="fas fa-star me-1"></i>Най-популярно
+          </span>
+        </div>
+        
+        <!-- Header with gradient -->
+        <div class="card-header text-center py-4 border-0"
+             th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
+                        (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
+                         'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+          
+          <div class="service-icon mb-3">
+            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white shadow"
+                 style="width: 60px; height: 60px;">
+              <i th:class="${iterStat.index == 0 ? 'fas fa-hand-sparkles' : 
+                             (iterStat.index == 1 ? 'fas fa-palette' : 'fas fa-gem')}"
+                 th:style="${iterStat.index == 0 ? 'color: #ee5a52;' : 
+                            (iterStat.index == 1 ? 'color: #764ba2;' : 'color: #11998e;')}"></i>
+            </div>
+          </div>
+          
+          <h3 class="text-white fw-bold mb-2" th:text="${s.name}"></h3>
+          <p class="text-white-75 mb-0" th:text="${s.description}"></p>
+        </div>
+        
+        <!-- Card Body -->
+        <div class="card-body text-center p-4">
+          <!-- Price -->
+          <div class="price-section mb-4">
+            <div class="display-5 fw-bold mb-2" 
+                 th:style="${iterStat.index == 0 ? 'color: #ee5a52;' : 
+                            (iterStat.index == 1 ? 'color: #764ba2;' : 'color: #11998e;')}"
+                 th:text="${#numbers.formatDecimal(s.price,1,2)} + ' лв'"></div>
+            <small class="text-muted">за процедура</small>
+          </div>
+          
+          <!-- Duration -->
+          <div class="duration-section mb-4">
+            <div class="d-flex align-items-center justify-content-center">
+              <i class="fas fa-clock text-muted me-2"></i>
+              <span class="fw-semibold" th:text="${s.durationMinutes} + ' минути'"></span>
+            </div>
+          </div>
+          
+          <!-- Features -->
+          <div class="features-list text-start mb-4">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-check-circle text-success me-2"></i>
+              <small>Професионален мастер</small>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-check-circle text-success me-2"></i>
+              <small>Премиум продукти</small>
+            </div>
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-check-circle text-success me-2"></i>
+              <small>Стерилно оборудване</small>
+            </div>
+          </div>
+          
+          <!-- Book Button -->
+          <a href="/booking" 
+             class="btn btn-lg w-100 py-3 fw-semibold text-white border-0 shadow-sm"
+             th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
+                        (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
+                         'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+            <i class="fas fa-calendar-plus me-2"></i>Запази час
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Discount Info -->
+  <div class="alert border-0 shadow-sm mb-5" 
+       style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border-radius: 20px;">
+    <div class="row align-items-center">
+      <div class="col-md-2 text-center">
+        <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-20"
+             style="width: 60px; height: 60px;">
+          <i class="fas fa-gift text-white fa-lg"></i>
+        </div>
+      </div>
+      <div class="col-md-10">
+        <h4 class="fw-bold mb-2">Специално предложение!</h4>
+        <p class="mb-2">Получете <strong>50% отстъпка</strong> на шестото Ви посещение в нашият салон!</p>
+        <small class="text-white-75">Начинът ни да Ви благодарим за доверието.</small>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FAQ Section -->
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <h4 class="fw-bold mb-3" style="color: #2c3e50;">Често задавани въпроси</h4>
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item border-0 mb-3" style="border-radius: 15px; overflow: hidden;">
+          <h2 class="accordion-header">
+            <button class="accordion-button fw-semibold" type="button" 
+                    style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 15px;"
+                    data-bs-toggle="collapse" data-bs-target="#faq1">
+              <i class="fas fa-question-circle me-2"></i>Как се запазва час?
+            </button>
+          </h2>
+          <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Можете да запазите час онлайн чрез нашата система за резервации.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h4 class="fw-bold mb-3" style="color: #2c3e50;">Контакти</h4>
+      <div class="contact-info">
+        <div class="d-flex align-items-center mb-3">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-circle me-3"
+               style="width: 40px; height: 40px; background: linear-gradient(135deg, #11998e, #38ef7d);">
+            <i class="fas fa-clock text-white"></i>
+          </div>
+          <div>
+            <strong>Работно време:</strong><br>
+            <small class="text-muted">9:00 - 18:00 (всеки ден)</small>
+          </div>
+        </div>
+        <div class="d-flex align-items-center mb-3">
+          <div class="d-inline-flex align-items-center justify-content-center rounded-circle me-3"
+               style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+            <i class="fas fa-phone text-white"></i>
+          </div>
+          <div>
+            <strong>Телефон:</strong><br>
+            <small class="text-muted">+359 XXX XXX XXX</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+.pricing-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important;
+}
+
+.popular-service {
+  z-index: 2;
+}
+
+.pricing-card .btn:hover {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+.accordion-button:not(.collapsed) {
+  background: linear-gradient(135deg, #5a67d8, #667eea) !important;
+  color: white !important;
+}
+</style>
 </html>

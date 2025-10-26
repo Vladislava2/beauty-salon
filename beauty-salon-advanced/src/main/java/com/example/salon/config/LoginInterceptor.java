@@ -18,7 +18,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         // Разрешаваме достъп до login и публични страници без вход
         if (path.startsWith("/login") || path.startsWith("/css") || path.startsWith("/js")
-                || path.startsWith("/images") || path.equals("/") || path.startsWith("/services")
+                || path.startsWith("/img") || path.equals("/") || path.startsWith("/services")
                 || path.startsWith("/pricing")) {
             return true;
         }

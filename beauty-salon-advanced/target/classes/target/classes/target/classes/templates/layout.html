@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="bg" xmlns:th="http://www.thymeleaf.org" th:fragment="layout">
 <head th:replace="~{fragments/head :: head}"></head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
 
-<main class="container py-5">
+<main class="container py-5 flex-grow-1">
   <div class="row">
     <!-- тук се вкарва фрагментът "content" от детската страница -->
     <div class="col-12" th:insert="~{::content}"></div>

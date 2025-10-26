@@ -45,17 +45,33 @@ public class BookingController {
   // Прост календар/availability API: връща свободни 30-мин интервали за деня (9:00-18:00) при default услуга 60м
   @GetMapping("/api/availability")
   @ResponseBody
-  public ResponseEntity<List<String>> availability(@RequestParam String date,
-                                                   @RequestParam(defaultValue = "60") int durationMinutes) {
-    LocalDate d = LocalDate.parse(date);
-    LocalDateTime start = d.atTime(LocalTime.of(9,0));
-    LocalDateTime end = d.atTime(LocalTime.of(18,0));
-    List<String> free = new ArrayList<>();
-    for (LocalDateTime t = start; !t.isAfter(end.minusMinutes(durationMinutes)); t = t.plusMinutes(30)) {
-      if (bookingService.isFree(t, durationMinutes)) {
-        free.add(t.toString());
+  public ResponseEntity<?> availability(@RequestParam String date,
+                                        @RequestParam(defaultValue = "60") int durationMinutes) {
+    try {
+      System.out.println("=== Availability API called ===");
+      System.out.println("Date: " + date + ", Duration: " + durationMinutes);
+      
+      LocalDate d = LocalDate.parse(date);
+      LocalDateTime start = d.atTime(LocalTime.of(9,0));
+      LocalDateTime end = d.atTime(LocalTime.of(18,0));
+      
+      System.out.println("Start: " + start + ", End: " + end);
+      
+      List<String> free = new ArrayList<>();
+      for (LocalDateTime t = start; !t.isAfter(end.minusMinutes(durationMinutes)); t = t.plusMinutes(30)) {
+        boolean isFree = bookingService.isFree(t, durationMinutes);
+        if (isFree) {
+          free.add(t.toString());
+        }
       }
+      
+      System.out.println("Found " + free.size() + " free slots");
+      return ResponseEntity.ok(free);
+    } catch (Exception e) {
+      System.err.println("=== ERROR in availability API ===");
+      e.printStackTrace();
+      return ResponseEntity.internalServerError()
+              .body("Error: " + e.getMessage());
     }
-    return ResponseEntity.ok(free);
   }
 }
