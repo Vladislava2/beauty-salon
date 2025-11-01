@@ -16,10 +16,11 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         String path = request.getRequestURI();
 
-        // Разрешаваме достъп до login и публични страници без вход
-        if (path.startsWith("/login") || path.startsWith("/css") || path.startsWith("/js")
+        // Разрешаваме достъп до login, register и публични страници без вход
+        if (path.startsWith("/login") || path.startsWith("/register") || path.startsWith("/css") || path.startsWith("/js")
                 || path.startsWith("/img") || path.equals("/") || path.startsWith("/services")
-                || path.startsWith("/pricing")) {
+                || path.startsWith("/pricing") || path.startsWith("/gallery") || path.startsWith("/salon")
+                || path.startsWith("/shop")) {
             return true;
         }
 

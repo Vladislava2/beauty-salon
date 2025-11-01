@@ -37,4 +37,21 @@ public class AuthService {
         }
         return user.filter(u -> u.getPassword().equals(passwordPlain)); // Временно; ще го криптираме по-късно
     }
+    
+    public boolean userExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
+    
+    public boolean register(String email, String passwordPlain) {
+        try {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setPassword(passwordPlain); // Временно без криптиране
+            userRepository.save(newUser);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

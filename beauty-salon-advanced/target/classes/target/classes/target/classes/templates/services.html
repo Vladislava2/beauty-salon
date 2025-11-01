@@ -4,11 +4,11 @@
   <!-- Hero Section -->
   <div class="text-center mb-5">
     <div class="d-inline-flex align-items-center justify-content-center bg-gradient rounded-circle p-3 mb-3" 
-         style="width: 80px; height: 80px; background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+         style="width: 80px; height: 80px; background: linear-gradient(135deg, #ff69b4, #ff1493);">
       <i class="fas fa-spa text-white fa-2x"></i>
     </div>
-    <h1 class="display-4 fw-bold mb-3" style="color: #2c3e50;">НАШИТЕ УСЛУГИ</h1>
-    <p class="lead text-muted">Доверете се на професионална грижа за ръцете си</p>
+    <h1 class="display-4 fw-bold mb-3" style="color: #ff1493;">НАШИТЕ УСЛУГИ</h1>
+    <p class="lead" style="color: #ff69b4;">Доверете се на професионална грижа за ръцете си</p>
   </div>
 
   <!-- Services Grid -->
@@ -19,18 +19,18 @@
         
         <!-- Decorative gradient overlay -->
         <div class="position-absolute top-0 end-0 opacity-10" style="width: 100px; height: 100px; border-radius: 50%; transform: translate(30px, -30px);"
-             th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
-                        (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
-                         'background: linear-gradient(135deg, #f093fb, #f5576c);')}">
+             th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff69b4, #ff1493);' : 
+                        (iterStat.index == 1 ? 'background: linear-gradient(135deg, #ff1493, #c71585);' : 
+                         'background: linear-gradient(135deg, #ffb6c1, #ff69b4);')}">
         </div>
         
         <!-- Service Icon -->
         <div class="card-body text-center p-4">
           <div class="service-icon mb-3">
             <div class="d-inline-flex align-items-center justify-content-center rounded-circle p-2 mb-2" style="width: 50px; height: 50px;"
-                 th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
-                            (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
-                             'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+                 th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff69b4, #ff1493);' : 
+                            (iterStat.index == 1 ? 'background: linear-gradient(135deg, #ff1493, #c71585);' : 
+                             'background: linear-gradient(135deg, #ffb6c1, #ff69b4);')}">
               <i class="text-white"
                  th:classappend="${iterStat.index == 0 ? 'fas fa-hand-sparkles' : 
                                   (iterStat.index == 1 ? 'fas fa-palette' : 'fas fa-gem')}"></i>
@@ -38,33 +38,34 @@
           </div>
           
           <!-- Service Image -->
-          <div class="service-image-wrapper mb-3">
+          <div class="text-center mb-3">
             <img th:src="${iterStat.index == 0 ? '/img/service-classic.jpg' : 
-                          (iterStat.index == 1 ? '/img/service-gel.jpg' : '/img/service-maintenance.jpg')}" 
-                 th:alt="${s.name}" 
-                 class="service-photo shadow-sm"
+                          (iterStat.index == 1 ? '/img/service-gel.jpg' : 
+                          (iterStat.index == 2 ? '/img/service-maintenance.jpg' : 
+                          (iterStat.index == 3 ? '/img/service-acryl.jpg' :
+                          (iterStat.index == 4 ? '/img/service-pedicure.jpg' :
+                          (iterStat.index == 5 ? '/img/service-japan.jpg' : '/img/placeholder.jpg')))))}"
+                 th:alt="${s.name}"
+                 class="shadow-sm rounded"
+                 style="width: 100%; max-width: 210px; height: 200px; object-fit: cover;"
                  onerror="this.src='/img/placeholder.jpg'">
           </div>
           
           <!-- Service Details -->
           <h4 class="card-title fw-bold mb-3" th:text="${s.name}" 
-              th:style="${iterStat.index == 0 ? 'color: #ee5a52;' : 
-                         (iterStat.index == 1 ? 'color: #764ba2;' : 'color: #11998e;')}"></h4>
+              th:style="${iterStat.index == 0 ? 'color: #ff69b4;' : 
+                         (iterStat.index == 1 ? 'color: #ff1493;' : 'color: #ffb6c1;')}"></h4>
           
           <!-- Detailed Description -->
           <p class="card-text text-muted mb-3 text-start" style="font-size: 0.9rem; line-height: 1.6;"
-             th:text="${iterStat.index == 0 ? 
-                        'Класическият маникюр е основна грижа за ноктите, която включва оформяне на нокътната плочка, почистване на кожичките, полиране и нанасяне на лак. Той придава изчистен и поддържан вид на ръцете, като едновременно подхранва и заздравява ноктите. Подходящ е за всеки повод и подчертава естествената красота на ръцете.' : 
-                        (iterStat.index == 1 ? 
-                         'Гел лакът е дълготрайно решение за перфектен маникюр, което осигурява издръжливост до 2-3 седмици. Той предлага богата гама от цветове и блестящ ефект, без да се напуква или обелва. Идеален избор за заети дами, които искат безупречни нокти за по-дълго време.' : 
-                         'Поддръжката на гел включва корекция на отрасналата част на нокътя и подсилване на гел покритието. Тази процедура осигурява продължителна красота и здравина на ноктите, като запазва перфектния им вид. Препоръчва се на всеки 2-3 седмици за оптимални резултати.')}"></p>
+             th:text="${s.description}"></p>
           
           <!-- Duration Badge -->
           <div class="mb-3">
             <span class="badge rounded-pill px-3 py-2"
-                  th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
-                             (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
-                              'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+                  th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff69b4, #ff1493);' : 
+                             (iterStat.index == 1 ? 'background: linear-gradient(135deg, #ff1493, #c71585);' : 
+                              'background: linear-gradient(135deg, #ffb6c1, #ff69b4);')}">
               <i class="fas fa-clock me-1"></i><span th:text="${s.durationMinutes} + ' мин'"></span>
             </span>
           </div>
@@ -73,9 +74,9 @@
           <div class="text-center mt-auto">
             <a href="/booking" 
                class="btn btn-lg px-5 py-2 fw-semibold text-white border-0 shadow-sm"
-               th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
-                          (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
-                           'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
+               th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff69b4, #ff1493);' : 
+                          (iterStat.index == 1 ? 'background: linear-gradient(135deg, #ff1493, #c71585);' : 
+                           'background: linear-gradient(135deg, #ffb6c1, #ff69b4);')}">
               <i class="fas fa-calendar-plus me-2"></i>Запази час
             </a>
           </div>
@@ -85,13 +86,112 @@
   </div>
   
   <!-- Call to Action Section -->
-  <div class="text-center py-5" style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 20px;">
+  <div class="text-center py-5" style="background: linear-gradient(135deg, #ff69b4, #ff1493); border-radius: 20px;">
     <div class="text-white">
       <h3 class="fw-bold mb-3">Не можете да решите?</h3>
       <p class="mb-4">Обадете се на наш консултант.</p>
-      <a href="/booking" class="btn btn-light btn-lg px-5 py-3 fw-semibold">
+      <button type="button" class="btn btn-light btn-lg px-5 py-3 fw-semibold" data-bs-toggle="modal" data-bs-target="#consultationModal">
         <i class="fas fa-phone me-2"></i>Консултация
-      </a>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Consultation Modal -->
+  <div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+        <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, #ff69b4, #ff1493); border-radius: 20px 20px 0 0;">
+          <h5 class="modal-title fw-bold" id="consultationModalLabel">
+            <i class="fas fa-user-friends me-2"></i>Нашите професионалисти
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <p class="text-center mb-4" style="color: #ff69b4;">
+            Свържете се с един от нашите професионалисти за консултация!
+          </p>
+          
+          <!-- Master 1 -->
+          <div class="card mb-3 border-0 shadow-sm" style="border-radius: 15px; background: linear-gradient(135deg, #fff5f8, #ffffff);">
+            <div class="card-body p-4">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                       style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff69b4, #ff1493);">
+                    <i class="fas fa-user text-white fa-lg"></i>
+                  </div>
+                </div>
+                <div class="col">
+                  <h6 class="fw-bold mb-2" style="color: #ff1493;">Мария Иванова</h6>
+                  <div class="mb-1">
+                    <i class="fas fa-phone me-2" style="color: #ff69b4;"></i>
+                    <a href="tel:0878111111" class="text-decoration-none" style="color: #333;">0878 111 111</a>
+                  </div>
+                  <div>
+                    <i class="fas fa-envelope me-2" style="color: #ff69b4;"></i>
+                    <a href="mailto:maria.ivanova@salon.bg" class="text-decoration-none" style="color: #333;">maria.ivanova@salon.bg</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Master 2 -->
+          <div class="card mb-3 border-0 shadow-sm" style="border-radius: 15px; background: linear-gradient(135deg, #fff5f8, #ffffff);">
+            <div class="card-body p-4">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                       style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff1493, #c71585);">
+                    <i class="fas fa-user text-white fa-lg"></i>
+                  </div>
+                </div>
+                <div class="col">
+                  <h6 class="fw-bold mb-2" style="color: #ff1493;">Елена Петрова</h6>
+                  <div class="mb-1">
+                    <i class="fas fa-phone me-2" style="color: #ff69b4;"></i>
+                    <a href="tel:0878222222" class="text-decoration-none" style="color: #333;">0878 222 222</a>
+                  </div>
+                  <div>
+                    <i class="fas fa-envelope me-2" style="color: #ff69b4;"></i>
+                    <a href="mailto:elena.petrova@salon.bg" class="text-decoration-none" style="color: #333;">elena.petrova@salon.bg</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Master 3 -->
+          <div class="card mb-0 border-0 shadow-sm" style="border-radius: 15px; background: linear-gradient(135deg, #fff5f8, #ffffff);">
+            <div class="card-body p-4">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div class="d-inline-flex align-items-center justify-content-center rounded-circle" 
+                       style="width: 60px; height: 60px; background: linear-gradient(135deg, #ffb6c1, #ff69b4);">
+                    <i class="fas fa-user text-white fa-lg"></i>
+                  </div>
+                </div>
+                <div class="col">
+                  <h6 class="fw-bold mb-2" style="color: #ff1493;">Ани Димитрова</h6>
+                  <div class="mb-1">
+                    <i class="fas fa-phone me-2" style="color: #ff69b4;"></i>
+                    <a href="tel:0878333333" class="text-decoration-none" style="color: #333;">0878 333 333</a>
+                  </div>
+                  <div>
+                    <i class="fas fa-envelope me-2" style="color: #ff69b4;"></i>
+                    <a href="mailto:ani.dimitrova@salon.bg" class="text-decoration-none" style="color: #333;">ani.dimitrova@salon.bg</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-lg px-4" style="background: linear-gradient(135deg, #ff69b4, #ff1493); color: white;" data-bs-dismiss="modal">
+            <i class="fas fa-times me-2"></i>Затвори
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -100,31 +200,31 @@
     <div class="col-md-4 text-center">
       <div class="feature-item p-4">
         <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
-             style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff6b6b, #ee5a52);">
+             style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff69b4, #ff1493);">
           <i class="fas fa-award text-white"></i>
         </div>
         <h5 class="fw-bold">Професионализъм</h5>
-        <p class="text-muted">Опитни специалисти с години опит</p>
+        <p style="color: #ff69b4;">Опитни специалисти с години опит</p>
       </div>
     </div>
     <div class="col-md-4 text-center">
       <div class="feature-item p-4">
         <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
-             style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2);">
+             style="width: 60px; height: 60px; background: linear-gradient(135deg, #ff1493, #c71585);">
           <i class="fas fa-heart text-white"></i>
         </div>
         <h5 class="fw-bold">Индивидуален подход</h5>
-        <p class="text-muted">Всяка услуга се адаптира според вашите нужди</p>
+        <p style="color: #ff69b4;">Всяка услуга се адаптира според вашите нужди</p>
       </div>
     </div>
     <div class="col-md-4 text-center">
       <div class="feature-item p-4">
         <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
-             style="width: 60px; height: 60px; background: linear-gradient(135deg, #11998e, #38ef7d);">
+             style="width: 60px; height: 60px; background: linear-gradient(135deg, #ffb6c1, #ff69b4);">
           <i class="fas fa-leaf text-white"></i>
         </div>
         <h5 class="fw-bold">Качествени продукти</h5>
-        <p class="text-muted">Използваме само премиум козметика</p>
+        <p style="color: #ff69b4;">Използваме само премиум козметика</p>
       </div>
     </div>
   </div>
@@ -133,8 +233,7 @@
 <style>
 .service-image-wrapper {
   width: 100%;
-  aspect-ratio: 16/9;
-  max-height: 150px;
+  height: 120px;
   overflow: hidden;
   border-radius: 12px;
   background: #f0f0f0;
@@ -143,7 +242,7 @@
 .service-photo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   display: block;
 }

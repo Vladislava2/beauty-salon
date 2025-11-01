@@ -6,15 +6,15 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <div class="card shadow-lg border-0">
-          <div class="card-header bg-dark text-white text-center py-4">
+          <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #ff69b4, #ff1493);">
             <h2 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Запазване на час</h2>
-            <p class="mb-0 mt-2 text-white-50">Попълни детайлите и избери удобен час</p>
+            <p class="mb-0 mt-2 text-white-75">Попълни детайлите и избери удобен час</p>
           </div>
           <div class="card-body p-4">
             <!-- Hero image -->
             <div class="text-center mb-4">
-              <img src="/img/placeholder.jpg" alt="Nail District"
-                   class="img-fluid rounded" style="max-height: 200px; object-fit: cover; width: 100%;">
+              <img src="/img/booking-appointment.png" alt="Nail District"
+                   class="img-fluid rounded" style="max-height: 400px; object-fit: cover; width: 100%;">
             </div>
 
             <!-- известия -->
@@ -100,7 +100,7 @@
 
               <div class="d-flex gap-2 mt-4 justify-content-end">
                 <a href="/services" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-1"></i>Назад</a>
-                <button type="submit" class="btn btn-dark btn-lg" id="submitBtn" disabled>
+                <button type="submit" class="btn btn-lg text-white" id="submitBtn" disabled style="background: linear-gradient(135deg, #ff69b4, #ff1493); border: none;">
                   <i class="fas fa-calendar-plus me-1"></i>Запази час
                 </button>
               </div>
@@ -284,6 +284,86 @@
           alert('Моля, попълнете всички задължителни полета!');
         }
       }
+    });
+  </script>
+  
+  <!-- Discount Voucher Modal -->
+  <div class="modal fade" id="discountVoucherModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+        <div class="modal-header text-white text-center border-0" style="background: linear-gradient(135deg, #ff69b4, #ff1493); border-radius: 20px 20px 0 0;">
+          <h3 class="modal-title w-100 fw-bold">
+            <i class="fas fa-gift me-2"></i>ПОЗДРАВЛЕНИЯ! 🎉
+          </h3>
+        </div>
+        <div class="modal-body p-5 text-center" th:if="${hasDiscount}">
+          <div class="voucher-content">
+            <div class="mb-4">
+              <i class="fas fa-star" style="font-size: 4rem; color: #ffd700;"></i>
+            </div>
+            
+            <h2 class="fw-bold mb-4" style="color: #ff1493;">
+              Това е Вашето 6-то посещение!
+            </h2>
+            
+            <div class="discount-details p-4 mb-4" style="background: linear-gradient(135deg, #fff5f8, #ffffff); border-radius: 15px; border: 3px dashed #ff69b4;">
+              <h3 class="fw-bold mb-3" style="color: #ff1493;">
+                50% ОТСТЪПКА 🎁
+              </h3>
+              
+              <div class="row mb-3">
+                <div class="col-6 text-end">
+                  <strong>Дата и час:</strong>
+                </div>
+                <div class="col-6 text-start" th:text="${#temporals.format(discountedAppointment.startAt, 'dd.MM.yyyy HH:mm')}">
+                  29.10.2025 11:00
+                </div>
+              </div>
+              
+              <div class="row mb-0">
+                <div class="col-6 text-end">
+                  <strong>Отстъпка:</strong>
+                </div>
+                <div class="col-6 text-start" style="color: #ff1493; font-size: 1.5rem; font-weight: bold;">
+                  50% OFF 🎉
+                </div>
+              </div>
+            </div>
+            
+            <div class="alert alert-warning border-0 mb-4" style="background: #fff3cd; border-radius: 15px;">
+              <i class="fas fa-mobile-alt me-2" style="color: #ff1493;"></i>
+              <strong>ВАЖНО:</strong> При Вашето посещение в салона, покажете screenshot от тази форма!
+            </div>
+            
+            <p class="text-muted mb-4">
+              <i class="fas fa-envelope me-2"></i>
+              Потвърждение е изпратено на Вашия емейл
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer border-0 justify-content-center">
+          <button type="button" class="btn btn-lg px-5 text-white" style="background: linear-gradient(135deg, #ff69b4, #ff1493);" data-bs-dismiss="modal">
+            <i class="fas fa-check me-2"></i>Разбрах!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Auto-show discount modal if discount was applied -->
+  <script th:if="${hasDiscount}">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Scroll to top first
+      window.scrollTo(0, 0);
+      
+      // Show the discount modal
+      setTimeout(function() {
+        var discountModal = new bootstrap.Modal(document.getElementById('discountVoucherModal'), {
+          backdrop: 'static',
+          keyboard: false
+        });
+        discountModal.show();
+      }, 500);
     });
   </script>
 </div>

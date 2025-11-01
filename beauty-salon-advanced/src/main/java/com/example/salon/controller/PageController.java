@@ -35,6 +35,9 @@ public class PageController {
   @GetMapping("/gallery")
   public String gallery() { return "gallery"; }
 
+  @GetMapping("/salon")
+  public String salon() { return "salon"; }
+
   @GetMapping("/booking")
   public String bookingForm(Model model) {
     model.addAttribute("services", serviceRepo.findAll());

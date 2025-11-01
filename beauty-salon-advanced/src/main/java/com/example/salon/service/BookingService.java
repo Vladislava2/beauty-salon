@@ -54,12 +54,24 @@ public class BookingService {
       throw new IllegalStateException("Слотът е зает, изберете друг час.");
     }
 
-    long past = appointmentRepository.countByCustomerEmailOrCustomerPhone(
-            a.getCustomerEmail(), a.getCustomerPhone()
-    );
+    // Count previous visits by email or phone
+    String email = isBlank(a.getCustomerEmail()) ? "" : a.getCustomerEmail();
+    String phone = isBlank(a.getCustomerPhone()) ? "" : a.getCustomerPhone();
+    
+    long past = appointmentRepository.countByCustomerEmailOrCustomerPhone(email, phone);
+    
+    System.out.println("\n===== 6TH VISIT DISCOUNT CHECK =====");
+    System.out.println("Email: " + email);
+    System.out.println("Phone: " + phone);
+    System.out.println("Previous visits: " + past);
+    System.out.println("This will be visit #" + (past + 1));
+    
     // 50% discount on 6th visit (after 5 completed visits)
     boolean hasDiscount = (past + 1 == 6);
     a.setDiscountPercent(hasDiscount ? 50 : 0);
+    
+    System.out.println("Discount applied: " + (hasDiscount ? "YES (50%)" : "NO"));
+    System.out.println("===================================\n");
 
     a.setPriceAtBooking(s.getPrice());
 
@@ -76,19 +88,30 @@ public class BookingService {
     if (!isBlank(a.getCustomerEmail())) {
       try {
         SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom("v123jordanova2002@gmail.com");
         msg.setTo(a.getCustomerEmail());
-        msg.setSubject("Потвърждение на час");
+        msg.setSubject("Потвърждение на час - Nail District");
+        
+        System.out.println("Изпращане на емейл до: " + a.getCustomerEmail());
+
+        // Форматиране на датата и часа
+        java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
+        String date = a.getStartAt().format(dateFormatter);
+        String time = a.getStartAt().format(timeFormatter);
 
         String body = String.format(
-                "Здравейте, %s!\n\n" +
-                        "Вашият час е записан за %s.\n" +
+                "Здравей, прекрасна! 💅\n\n" +
+                        "Ти запази час на %s от %s.\n\n" +
                         "Услуга: %s\n" +
                         "Цена: %s лв\n" +
-                        "Отстъпка: %s%%\n" +
-                        "Реферален код (споделете на приятел за бонус): %s\n\n" +
-                        "Благодарим!",
-                a.getCustomerName(),
-                a.getStartAt(),
+                        (a.getDiscountPercent() > 0 ? "Отстъпка: %s%%\n\n" : "\n") +
+                        "Реферален код: %s\n" +
+                        "Споделете го с приятелки за бонус! 🎁\n\n" +
+                        "Чакаме те с нетърпение!\n" +
+                        "Nail District 💅💖",
+                date,
+                time,
                 s.getName(),
                 s.getPrice(),
                 a.getDiscountPercent(),
@@ -97,8 +120,8 @@ public class BookingService {
 
         msg.setText(body);
         mailSender.send(msg);
-      } catch (Exception ignored) {
-        // В демо режим без SMTP може да хвърли изключение - игнорираме
+      } catch (Exception e) {
+        System.err.println("Не успя да изпратя емейл: " + e.getMessage());
       }
     }
 

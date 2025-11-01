@@ -45,6 +45,55 @@ public class AuthController {
                 });
     }
 
+    @GetMapping("/register")
+    public String registerForm() {
+        return "register";
+    }
+    
+    @PostMapping("/register")
+    public String doRegister(@RequestParam("email") String email,
+                            @RequestParam("password") String password,
+                            @RequestParam("confirmPassword") String confirmPassword,
+                            Model model) {
+        
+        // Validate email
+        if (!authService.isValidEmail(email)) {
+            model.addAttribute("error", "Невалиден имейл адрес.");
+            return "register";
+        }
+        
+        // Validate password length
+        if (password.length() < 6) {
+            model.addAttribute("error", "Паролата трябва да е поне 6 символа.");
+            return "register";
+        }
+        
+        // Validate password match
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("error", "Паролите не съвпадат.");
+            return "register";
+        }
+        
+        // Check if user already exists
+        if (authService.userExists(email)) {
+            model.addAttribute("error", "Потребител с този имейл вече съществува.");
+            return "register";
+        }
+        
+        // Register user
+        boolean success = authService.register(email, password);
+        
+        if (success) {
+            model.addAttribute("success", "Успешна регистрация! Можете да влезете в системата.");
+            // Redirect to login after 2 seconds
+            model.addAttribute("redirectToLogin", true);
+        } else {
+            model.addAttribute("error", "Грешка при регистрацията. Моля, опитайте отново.");
+        }
+        
+        return "register";
+    }
+
     @PostMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();

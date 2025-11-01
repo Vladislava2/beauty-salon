@@ -3,7 +3,7 @@
 <div th:fragment="content">
   <!-- Hero Section -->
   <div class="position-relative overflow-hidden p-5 mb-5 text-white rounded-4" 
-       style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); min-height: 500px;">
+       style="background: linear-gradient(135deg, #ff69b4 0%, #ff1493 50%, #ffb6c1 100%); min-height: 500px;">
     <div class="container py-5">
       <div class="row align-items-center">
         <div class="col-lg-8">
@@ -43,75 +43,96 @@
     <div class="position-absolute bottom-0 start-0" style="width: 150px; height: 150px; background: rgba(255,255,255,0.1); border-radius: 50%; transform: translate(-75px, 75px);"></div>
   </div>
 
-  <!-- Services Section -->
+  <!-- Photo Carousel Section -->
   <section class="mb-5">
     <div class="text-center mb-5">
       <div class="d-inline-flex align-items-center justify-content-center bg-gradient rounded-circle p-3 mb-3" 
-           style="width: 70px; height: 70px; background: linear-gradient(135deg, #f093fb, #f5576c);">
-        <i class="fas fa-gem text-white fa-lg"></i>
+           style="width: 70px; height: 70px; background: linear-gradient(135deg, #ff69b4, #ff1493);">
+        <i class="fas fa-images text-white fa-lg"></i>
       </div>
-      <h2 class="display-5 fw-bold mb-3" style="color: #2c3e50;">Популярни Услуги</h2>
-      <p class="lead text-muted">Открийте нашите най-търсени професионални процедури</p>
+      <h2 class="display-5 fw-bold mb-3" style="color: #ff1493;">Нашата Галерия</h2>
+      <p class="lead" style="color: #ff69b4;">Разгледайте нашите работи</p>
     </div>
     
-    <div class="row g-4">
-      <div class="col-md-4" th:each="s, iterStat : ${services}">
-        <div class="card h-100 border-0 shadow-lg service-preview-card position-relative overflow-hidden">
-          <!-- Gradient overlay -->
-          <div class="position-absolute top-0 start-0 w-100 h-25" 
-               th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
-                          (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
-                           'background: linear-gradient(135deg, #11998e, #38ef7d);')}"></div>
-          
-          <div class="card-body text-center p-4" style="padding-top: 80px !important;">
-            <!-- Service Icon -->
-            <div class="position-absolute" style="top: 20px; left: 50%; transform: translateX(-50%);">
-              <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white shadow"
-                   style="width: 60px; height: 60px;">
-                <i th:class="${iterStat.index == 0 ? 'fas fa-hand-sparkles' : 
-                               (iterStat.index == 1 ? 'fas fa-palette' : 'fas fa-gem')}"
-                   th:style="${iterStat.index == 0 ? 'color: #ee5a52;' : 
-                              (iterStat.index == 1 ? 'color: #764ba2;' : 'color: #11998e;')}"></i>
-              </div>
-            </div>
-            
-            <img src="/img/placeholder.jpg" class="img-fluid rounded-3 mb-3 shadow-sm" 
-                 alt="Service" style="height: 150px; width: 100%; object-fit: cover;">
-            
-            <h5 class="card-title fw-bold mb-2" th:text="${s.name}"
-                th:style="${iterStat.index == 0 ? 'color: #ee5a52;' : 
-                           (iterStat.index == 1 ? 'color: #764ba2;' : 'color: #11998e;')}"></h5>
-            
-            <p class="card-text text-muted mb-4" th:text="${s.description}"></p>
-            
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="price">
-                <span class="h5 fw-bold mb-0" 
-                      th:style="${iterStat.index == 0 ? 'color: #ee5a52;' : 
-                                 (iterStat.index == 1 ? 'color: #764ba2;' : 'color: #11998e;')}"
-                      th:text="${#numbers.formatDecimal(s.price,1,2)} + ' лв'"></span>
-              </div>
-              <a href="/booking" 
-                 class="btn btn-sm px-3 py-2 fw-semibold text-white border-0 shadow-sm"
-                 th:style="${iterStat.index == 0 ? 'background: linear-gradient(135deg, #ff6b6b, #ee5a52);' : 
-                            (iterStat.index == 1 ? 'background: linear-gradient(135deg, #667eea, #764ba2);' : 
-                             'background: linear-gradient(135deg, #11998e, #38ef7d);')}">
-                <i class="fas fa-arrow-right me-1"></i>Запази
-              </a>
-            </div>
+    <!-- Bootstrap Carousel -->
+    <div class="container d-flex justify-content-center">
+      <div id="salonCarousel" class="carousel slide shadow-lg rounded-4 overflow-hidden" data-bs-ride="carousel" style="width: 600px; height: 600px;">
+      <!-- Indicators -->
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="2"></button>
+        <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="3"></button>
+        <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="4"></button>
+        <button type="button" data-bs-target="#salonCarousel" data-bs-slide-to="5"></button>
+      </div>
+      
+      <!-- Slides -->
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="/img/service-classic.jpg" class="d-block w-100 carousel-image" alt="Класически маникюр">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="fw-bold">Класически маникюр</h5>
+            <p>Перфектна грижа за вашите ръце</p>
           </div>
         </div>
+        <div class="carousel-item">
+          <img src="/img/service-gel.jpg" class="d-block w-100 carousel-image" alt="Гел лак">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="fw-bold">Гел лак</h5>
+            <p>Дълготрайна красота и блясък</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="/img/service-maintenance.jpg" class="d-block w-100 carousel-image" alt="Поддръжка гел">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="fw-bold">Поддръжка гел</h5>
+            <p>Професионално подсилване</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="/img/service-acryl.jpg" class="d-block w-100 carousel-image" alt="Изграждане">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="fw-bold">Изграждане</h5>
+            <p>Издръжливи и красиви нокти</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="/img/service-pedicure.jpg" class="d-block w-100 carousel-image" alt="Педикюр">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="fw-bold">Педикюр</h5>
+            <p>Грижа за вашите крака</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="/img/service-japan.jpg" class="d-block w-100 carousel-image" alt="Японски маникюр">
+          <div class="carousel-caption d-none d-md-block">
+            <h5 class="fw-bold">Японски маникюр</h5>
+            <p>Естествен блясък и здравина</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Controls -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#salonCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Предишен</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#salonCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Следващ</span>
+      </button>
       </div>
     </div>
   </section>
   
   <!-- Call to Action -->
-  <div class="text-center py-5 mb-5" style="background: linear-gradient(135deg, #11998e, #38ef7d); border-radius: 25px;">
+  <div class="text-center py-5 mb-5" style="background: linear-gradient(135deg, #ff69b4, #ff1493); border-radius: 25px;">
     <div class="text-white">
       <h3 class="fw-bold mb-3">Готови за новото си преживяване?</h3>
       <p class="mb-4">Запазете час днес и почувствайте разликата</p>
       <a href="/booking" class="btn btn-light btn-lg px-5 py-3 fw-semibold">
-        <i class="fas fa-phone me-2"></i>Свържете се с нас
+        <i class="fas fa-calendar-plus me-2"></i>Запазете час
       </a>
     </div>
   </div>
@@ -134,13 +155,23 @@
   50% { transform: translateY(-20px); }
 }
 
-.service-preview-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+#salonCarousel {
+  width: 600px !important;
+  height: 600px !important;
 }
 
-.service-preview-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+.carousel-image {
+  height: 600px;
+  width: 600px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
 }
 
 .btn:hover {
