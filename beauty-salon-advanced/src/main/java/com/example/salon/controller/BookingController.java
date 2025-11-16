@@ -1,6 +1,7 @@
 package com.example.salon.controller;
 
 import com.example.salon.entity.Appointment;
+import com.example.salon.entity.ManicureService;
 import com.example.salon.repo.ManicureServiceRepository;
 import com.example.salon.service.BookingService;
 import jakarta.validation.Valid;
@@ -33,6 +34,14 @@ public class BookingController {
   public String submit(@Valid @ModelAttribute("appointment") Appointment appointment,
                        BindingResult binding, Model model) {
     model.addAttribute("services", serviceRepo.findAll());
+    
+    // Manually load the service if only ID was provided
+    if (appointment.getService() != null && appointment.getService().getId() != null) {
+      ManicureService service = serviceRepo.findById(appointment.getService().getId())
+              .orElseThrow(() -> new IllegalArgumentException("Invalid service ID"));
+      appointment.setService(service);
+    }
+    
     if (binding.hasErrors()) {
       return "booking";
     }
@@ -46,6 +55,8 @@ public class BookingController {
         model.addAttribute("discountedAppointment", saved);
       }
     } catch (IllegalStateException ex) {
+      model.addAttribute("error", ex.getMessage());
+    } catch (IllegalArgumentException ex) {
       model.addAttribute("error", ex.getMessage());
     }
     return "booking";

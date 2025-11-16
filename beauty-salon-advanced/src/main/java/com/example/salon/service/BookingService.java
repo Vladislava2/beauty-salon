@@ -20,7 +20,7 @@ public class BookingService {
     this.mailSender = mailSender;
   }
 
-  // Java 8 helper вместо String.isBlank()
+
   private boolean isBlank(String s) {
     return s == null || s.trim().isEmpty();
   }
@@ -28,7 +28,6 @@ public class BookingService {
   public boolean isFree(LocalDateTime start, int durationMinutes) {
     try {
       LocalDateTime end = start.plusMinutes(durationMinutes);
-      // Check if any appointment overlaps with this time slot
       long overlaps = appointmentRepository.countByStartAtBetween(
               start.minusMinutes(durationMinutes - 1), end
       );
@@ -36,14 +35,17 @@ public class BookingService {
     } catch (Exception e) {
       System.err.println("Error checking availability: " + e.getMessage());
       e.printStackTrace();
-      return true; // If error, assume slot is free
+      return true;
     }
   }
 
   private String generateReferralCode(String id) {
-    if (id == null) return null;
+    if (id == null || id.trim().isEmpty()) {
+      int random = (int)(Math.random() * 1_000_000);
+      return "REF" + String.format("%06d", random);
+    }
     int h = Math.abs(id.hashCode());
-    return "REF" + (h % 1_000_000);
+    return "REF" + String.format("%06d", h % 1_000_000);
   }
 
   @Transactional
@@ -79,7 +81,11 @@ public class BookingService {
       String idForCode = !isBlank(a.getCustomerEmail())
               ? a.getCustomerEmail()
               : a.getCustomerPhone();
-      a.setReferralCode(generateReferralCode(idForCode));
+      String generatedCode = generateReferralCode(idForCode);
+      a.setReferralCode(generatedCode);
+      System.out.println("Generated referral code: " + generatedCode + " from: " + idForCode);
+    } else {
+      System.out.println("Using existing referral code: " + a.getReferralCode());
     }
 
     Appointment saved = appointmentRepository.save(a);
@@ -107,7 +113,7 @@ public class BookingService {
                         "Цена: %s лв\n" +
                         (a.getDiscountPercent() > 0 ? "Отстъпка: %s%%\n\n" : "\n") +
                         "Реферален код: %s\n" +
-                        "Споделете го с приятелки за бонус! 🎁\n\n" +
+                        "Споделете" + " " + "го" + " " + "с" + " " + "приятелки" + " " + "за" + " " + "бонус! 🎁\n\n" +
                         "Чакаме те с нетърпение!\n" +
                         "Nail District 💅💖",
                 date,
@@ -121,7 +127,7 @@ public class BookingService {
         msg.setText(body);
         mailSender.send(msg);
       } catch (Exception e) {
-        System.err.println("Не успя да изпратя емейл: " + e.getMessage());
+        System.err.println("Грешка при изпращане на имейл: " + e.getMessage());
       }
     }
 
